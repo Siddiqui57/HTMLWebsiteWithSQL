@@ -1,0 +1,70 @@
+CREATE TABLE Person (
+   ID         int NOT NULL UNIQUE AUTO_INCREMENT,
+   password   char(50) NOT NULL UNIQUE,
+   name       char(100) NOT NULL,
+
+   PRIMARY KEY (ID)
+);
+
+CREATE TABLE Employee (
+   employee_ID   int NOT NULL UNIQUE AUTO_INCREMENT,
+   is_admin      bool,
+   ID            int NOT NULL UNIQUE,
+   password      char(50) NOT NULL UNIQUE,
+
+   PRIMARY KEY (ID, password, employee_ID),
+   FOREIGN KEY (ID) REFERENCES Person(ID),
+   FOREIGN KEY (password) REFERENCES Person(password)
+);
+
+CREATE TABLE Customer (
+   customer_ID   int NOT NULL UNIQUE AUTO_INCREMENT,
+   ID            int NOT NULL UNIQUE,
+   password      char(50) NOT NULL UNIQUE,
+   phone_num     char(11) NOT NULL,
+
+   PRIMARY KEY (customer_ID, ID, password),
+   FOREIGN KEY (ID) REFERENCES Person(ID),
+   FOREIGN KEY (password) REFERENCES Person(password)
+);
+
+CREATE TABLE Ordered (
+   tracking_num       int NOT NULL UNIQUE AUTO_INCREMENT,
+   card_info          char(50) NOT NULL,
+   shipping_address   char(50) NOT NULL,
+   status             char(10) NOT NULL,
+   employee_ID        int,
+   phone_num          char(11) NOT NULL,
+   message            char(100),
+
+   PRIMARY KEY (tracking_num),
+   FOREIGN KEY (employee_ID) REFERENCES Employee(employee_ID)
+);
+
+CREATE TABLE Item (
+   item_num   int NOT NULL UNIQUE AUTO_INCREMENT,
+   price      decimal(5, 2) NOT NULL,
+   quantity   int NOT NULL,
+   name       char(50) NOT NULL,
+
+   PRIMARY KEY (item_num)
+);
+
+CREATE TABLE CustomerOrder (
+   customer_ID    int NOT NULL,
+   tracking_num   int NOT NULL UNIQUE AUTO_INCREMENT,
+
+   PRIMARY KEY (customer_ID, tracking_num),
+   FOREIGN KEY (customer_ID) REFERENCES Customer(customer_ID),
+   FOREIGN KEY (tracking_num) REFERENCES Ordered(tracking_num)
+);
+
+CREATE TABLE OrderList (
+   tracking_num   int NOT NULL AUTO_INCREMENT,
+   item_num       int NOT NULL,
+   quantity       int NOT NULL,
+
+   PRIMARY KEY (tracking_num, item_num),
+   FOREIGN KEY (tracking_num) REFERENCES Ordered(tracking_num),
+   FOREIGN KEY (item_num) REFERENCES Item(item_num)
+);

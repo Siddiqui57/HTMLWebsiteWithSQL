@@ -1,4 +1,4 @@
-# HTMLWebsiteWithPHP
+# HTMLWebsiteWithSQL
 Group project that implements HTML coding alongside PHP to pull from a MariaDB database.
 
 The website is transaction-based and includes separate pages for checkout, administration, shipping, and receiving.
